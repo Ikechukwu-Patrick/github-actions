@@ -31,6 +31,6 @@ jobs:
       - name: Pull Image from Docker Hub
         run: docker pull ike20743/springboot-image:latest
       - name: Delete old container
-        run: docker rm -f springboot-image-container  # Use container name here
+        run: docker rm -f springboot-image-container  
       - name: Run Docker container
         run: docker run -d -p 8080:8080 --name springboot-image-container ike20743/springboot-image:latest
