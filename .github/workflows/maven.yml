@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-latest]
+    runs-on: [self-hosted, ip-172-31-18-231]  # Use self-hosted runner
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -17,24 +17,20 @@ jobs:
           java-version: '17'
       - name: Build Project
         run: mvn clean install -DskipTests
-      - name: login to docker hub
-        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-      - name: Build docker image
-        run: docker build -t ike20743/springboot-image .
-      - name: Publish image to docker hub
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t ike20743/springboot-image:latest .  # Specify the tag
+      - name: Publish image to Docker Hub
         run: docker push ike20743/springboot-image:latest
 
   deploy:
     needs: build
-    runs-on: [ip-172-31-18-231]
+    runs-on: [self-hosted, ip-172-31-18-231]  # Use self-hosted runner
     steps:
-      - name: Pull Image free docker hub
+      - name: Pull Image from Docker Hub
         run: docker pull ike20743/springboot-image:latest
       - name: Delete old container
-        run: docker rm -f springboot-image:latest
-      - name: Run docker container
+        run: docker rm -f springboot-image-container  # Use container name here
+      - name: Run Docker container
         run: docker run -d -p 8080:8080 --name springboot-image-container ike20743/springboot-image:latest
-
-
-
-
