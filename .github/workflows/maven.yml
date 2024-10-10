@@ -33,7 +33,7 @@ jobs:
       - name: Delete old container
         run: docker rm -f springboot-image:latest
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name springboot-image ike20743/springboot-image:latest
+        run: docker run -d -p 8080:8080 --name springboot-image-container ike20743/springboot-image:latest
 
 
 
