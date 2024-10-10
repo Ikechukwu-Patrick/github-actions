@@ -1,4 +1,4 @@
-FROM eclipe-temurin:17-jdk-alpine
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY target/springboot-image.jar springboot-image.jar
 EXPOSE 8081
